@@ -1,7 +1,7 @@
 import sys
 
-path_to_system_map = "/home/ubuntu/projects/lkm_samples/semantic_builder/System.map-5.15.0-67-generic"
-path_to_table_txt = "/home/ubuntu/projects/lkm_samples/semantic_builder/table.txt"
+path_to_system_map = "/home/ubuntu/projects/kinvX/monitor/semantic_builder/System.map"
+path_to_table_txt = "/home/ubuntu/projects/kinvX/monitor/semantic_builder/table.txt"
 
 cord = {
     "name": "",
