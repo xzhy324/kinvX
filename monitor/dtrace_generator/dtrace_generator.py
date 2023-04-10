@@ -1,7 +1,7 @@
 import sys
 import ctypes
 
-
+# load the shared library from pa_fetcher
 fetcher = ctypes.cdll.LoadLibrary('/home/ubuntu/projects/kinvX/host/pa_fetcher/lib_fetcher.so')
 fetcher.get_pa.restype = ctypes.c_char_p
 
@@ -15,15 +15,24 @@ def get_cur_symbols():
     ret = {}
     with open("../semantic_builder/table.txt", "r") as f:
         lines = f.readlines()
-        lines = lines[62914:63000]
+
+        # 在data段中分析数据不变式
+        for (index, line) in enumerate(lines):
+            if line.split()[0] == "_sdata":
+                start_position = index
+            if line.split()[0] == "_edata":
+                end_position = index
+                break
+        lines = lines[start_position:end_position]
+
+        # 利用动态链接库获取物理内存对应的值
         for line in lines:
             name = line.split()[0]
             physical_address = line.split()[2]
-            print(physical_address)
             arg = ctypes.c_char_p(bytes(physical_address, 'utf-8'))
-            value = fetcher.get_pa(arg, 8).decode('utf-8')
-            #value = str(random.randint(0, 2**64))
+            value = fetcher.get_pa(arg, 8).decode('utf-8') #注意这里的第二个参数，表示读取n个字节，但是该接口没有实现，只能读8个字节
             ret[name] = int(value,16)
+
     return ret
 
 

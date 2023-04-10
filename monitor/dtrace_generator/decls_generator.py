@@ -6,7 +6,15 @@ def get_symbols():
     ret = []
     with open("../semantic_builder/table.txt", "r") as f:
         lines = f.readlines()
-        lines = lines[62914:63000]
+
+        # 在data段中分析数据不变式
+        for (index, line) in enumerate(lines):
+            if line.split()[0] == "_sdata":
+                start_position = index
+            if line.split()[0] == "_edata":
+                end_position = index
+        lines = lines[start_position:end_position]
+
         for line in lines:
             ret.append(line.split()[0])
     return ret
