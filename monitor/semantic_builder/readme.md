@@ -11,7 +11,7 @@ linux内核地址存在着两层随机：
 通过(cord_name, cord_va ,cord_pa) 三元组来重建物理内存语义，其中cord_name为linux内核某一导出符号的名称，cord_va为该符号的虚拟地址，cord_pa为该符号的物理地址。通过这三个元素，我们可以重建出物理内存的语义。
 
 # Usage
-
+## 1. Build Semantics
 1. cp `/boot/System.map-*` to a path you want and filled it in the table_initializer.py
 2. add read permission to the copied System.map
 3. specify the path of the System.map and output file in the table_initializer.py
@@ -28,4 +28,10 @@ make run
 注意：导出System.map步骤可以替换为
 ```bash
 sudo nm path/to/vmlinux > ./System.map # 从vmlinux中导出System.map
+```
+
+
+## 2. Inspect table's layout
+```bash
+python3 table_inspector.py
 ```
