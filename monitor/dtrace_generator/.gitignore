@@ -1,0 +1,4 @@
+*.dtrace
+*.decls
+*.txt
+*.inv.gz

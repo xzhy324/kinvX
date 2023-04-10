@@ -1,8 +1,9 @@
-import time
 import sys
+import ctypes
 
-import random
 
+fetcher = ctypes.cdll.LoadLibrary('/home/ubuntu/projects/kinvX/host/pa_fetcher/lib_fetcher.so')
+fetcher.get_pa.restype = ctypes.c_char_p
 
 with open("counter.txt", "r") as f:
     counter = int(f.read())
@@ -14,9 +15,15 @@ def get_cur_symbols():
     ret = {}
     with open("../semantic_builder/table.txt", "r") as f:
         lines = f.readlines()
-        lines = lines[62900:63000]
+        lines = lines[62914:63000]
         for line in lines:
-            ret[line.split()[0]] = random.randint(0, 2**64)
+            name = line.split()[0]
+            physical_address = line.split()[2]
+            print(physical_address)
+            arg = ctypes.c_char_p(bytes(physical_address, 'utf-8'))
+            value = fetcher.get_pa(arg, 8).decode('utf-8')
+            #value = str(random.randint(0, 2**64))
+            ret[name] = int(value,16)
     return ret
 
 

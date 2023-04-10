@@ -6,7 +6,7 @@ def get_symbols():
     ret = []
     with open("../semantic_builder/table.txt", "r") as f:
         lines = f.readlines()
-        lines = lines[62900:63000]
+        lines = lines[62914:63000]
         for line in lines:
             ret.append(line.split()[0])
     return ret
