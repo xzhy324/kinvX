@@ -31,7 +31,7 @@ char* get_pa(const char* pa, int bytes) {
     unsigned char *out = (unsigned char *)buffer;
     //从高到低输出
     int offset = 0;
-    offset += sprintf(ret + offset,"0x", out[7]);
+    offset += sprintf(ret + offset,"0x");
     for (int i = BUFSIZE - 1; i >= 0; i--)
     {
         offset += sprintf(ret + offset,"%02x", out[i]); 
