@@ -1,5 +1,31 @@
 # kinvX
 a runtime kernel invariants detector, based on the [Daikon](https://plse.cs.washington.edu/daikon/) tool. 
+
+## Usage
+
+initialize when kernel starts up
+```bash
+make install
+```
+
+generate kernel dtrace (kernel snapshot) during runtime
+```bash
+make gen_dtrace N_DTRACE=3
+```
+
+run daikon to detect invariants
+```bash
+cd ./monitor/dtrace_generator
+java -cp $DAIKONDIR/daikon.jar daikon.Daikon \
+--config_option daikon.derive.Derivation.disable_derived_variables=true \
+test.decls 0.dtrace 1.dtrace 2.dtrace
+```
+
+uninstall kinvX after use
+```bash
+make uninstall
+```
+
 ## Roadmap
 ### Host Side
 * Page Fetcher
