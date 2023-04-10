@@ -9,3 +9,4 @@ modules.order
 *.ko
 *.mod
 build/
+System.map*

@@ -1,8 +1,13 @@
 .PHONY: install uninstall host monitor
 N_DTRACE ?= 1
 
-install:host monitor
+install:init host monitor #order matters
+	@python3 -u ./monitor/semantic_builder/table_reader.py
 	@echo "Installation complete"
+
+init:
+#   System.map is required by all the modules
+	make -C ./monitor/semantic_builder install
 
 host:
 	make -C ./host/pa_fetcher install
@@ -10,11 +15,13 @@ host:
 
 monitor:
 	make -C ./monitor/dtrace_generator decls
+	
 
 uninstall:
 	make -C ./host/cord_exporter clean
 	make -C ./host/pa_fetcher uninstall
 	make -C ./monitor/dtrace_generator clean
+	make -C ./monitor/semantic_builder uninstall
 
 gen_dtrace:
 	make -C ./monitor/dtrace_generator dtrace n=$(N_DTRACE)
