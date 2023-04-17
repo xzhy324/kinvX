@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
     with open("result%d.txt" % counter, "w") as f:
         for name, value in cur_symbols.items():
-            f.write("%s %s\n" % (name, value))
+            f.write("%s %x\n" % (name, value))
 
     with open("counter.txt", "w") as f:
         f.write(str(counter + 1))
