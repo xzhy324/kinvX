@@ -17,7 +17,7 @@ path_to_table = "../semantic_builder/table.txt"
 path_to_libfetcher = '../../host/pa_fetcher/lib_fetcher.so'
 
 if __name__ == "__main__":
-    print("config: ./monitor/dtrace_generator")
+    print("\n./monitor/dtrace_generator/config.py:")
     print("      start_symbol:   %s" % start_symbol)
     if gap == 0:
         print("        end_symbol:   %s" % end_symbol)

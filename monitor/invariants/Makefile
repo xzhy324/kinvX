@@ -16,6 +16,7 @@ install:
 
 rename_0inv:
 	@mv 0.inv $(shell cat counter.txt).inv
+	@echo "Invariants saved to $(shell cat counter.txt).inv"
 	@echo $$(($(shell cat counter.txt)+1)) > counter.txt
 
 uninstall:clean

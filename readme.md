@@ -13,8 +13,10 @@ else
 
 ```bash
 # ./config
-start_symbol=sys_call_table  # must be specified
-end_symbol=_edata   # either end_symbol or gap must be specified
+# start symbol must be specified
+start_symbol=sys_call_table 
+# either end_symbol or gap must be specified
+end_symbol=_edata
 gap=100
 ```
 > Assume that 1. end_symbol's address HIGHER than start_symbol's address 2. gap >= 0
@@ -50,6 +52,11 @@ uninstall kinvX
 ```bash
 make uninstall
 ```
+
+## Requirements
+1. python3
+2. linux-headers
+
 
 ## Roadmap
 ### Host Side

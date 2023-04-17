@@ -1,7 +1,8 @@
 import sys
+import config
 
-path_to_system_map = "/home/ubuntu/projects/kinvX/monitor/semantic_builder/System.map"
-path_to_table_txt = "/home/ubuntu/projects/kinvX/monitor/semantic_builder/table.txt"
+path_to_system_map = config.path_to_system_map
+path_to_table_txt = config.path_to_table_txt
 
 cord = {
     "name": "",

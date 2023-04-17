@@ -1,4 +1,5 @@
-path_to_table_txt = "/home/ubuntu/projects/kinvX/monitor/semantic_builder/table.txt"
+import config
+path_to_table_txt = config.path_to_table_txt
 
 
 def load_table():
@@ -28,6 +29,7 @@ if __name__ == "__main__":
         "__bss_start",  # __bss_start和__bss_stop为BSS段的开始和结束地址，包含初始化为0的所有静态全局变量
         "__bss_stop",
     ]
+    print("\nKernel Address Space Layout:")
     for index, item in enumerate(table):
         if item in symbols:
             print(

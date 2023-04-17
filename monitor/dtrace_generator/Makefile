@@ -14,9 +14,9 @@ gen_inv:
 	java -cp $$DAIKONDIR/daikon.jar daikon.Daikon \
 	--config_option daikon.derive.Derivation.disable_derived_variables=true \
 	test.decls $(DTRACE_ARGS)
-	gunzip 0.inv.gz
-	mv 0.inv ../invariants/0.inv
-	make -C ../invariants/ rename_0inv
+	@gunzip 0.inv.gz
+	@mv 0.inv ../invariants/0.inv
+	@make -C ../invariants/ rename_0inv
 
 
 clean:
