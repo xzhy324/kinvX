@@ -1,18 +1,24 @@
-import time
 import sys
+import config
+
+start_symbol = config.start_symbol
+end_symbol = config.end_symbol
+gap = config.gap  # if gap != 0 ,then end_symbol is not used
 
 
 def get_symbols():
     ret = []
-    with open("../semantic_builder/table.txt", "r") as f:
+    with open(config.path_to_table, "r") as f:
         lines = f.readlines()
 
-        # 在data段中分析数据不变式
-        for (index, line) in enumerate(lines):
-            if line.split()[0] == "_sdata":
+        # 在[start_symbol, end_symbol) 或 [start_symbol, start_symbol+gap)中分析数据不变式
+        for index, line in enumerate(lines):
+            if line.split()[0] == start_symbol:
                 start_position = index
-            if line.split()[0] == "_edata":
+            if line.split()[0] == end_symbol:
                 end_position = index
+                break
+        end_position = start_position + gap if gap != 0 else end_position
         lines = lines[start_position:end_position]
 
         for line in lines:

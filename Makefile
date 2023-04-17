@@ -15,6 +15,8 @@ host:
 
 monitor:
 	make -C ./monitor/dtrace_generator decls
+	@python3 -u ./monitor/dtrace_generator/config.py
+	make -C ./monitor/invariants install
 	
 
 uninstall:
@@ -22,8 +24,17 @@ uninstall:
 	make -C ./host/pa_fetcher uninstall
 	make -C ./monitor/dtrace_generator clean
 	make -C ./monitor/semantic_builder uninstall
+	make -C ./monitor/invariants uninstall
+	@echo "Uninstallation complete"
 
-gen_dtrace:
+generate_dtrace:
 	make -C ./monitor/dtrace_generator dtrace n=$(N_DTRACE)
+
+generate_invariants:
+	make -C ./monitor/dtrace_generator gen_inv
+
+reset:
+	make -C ./monitor/dtrace_generator clean
+	make -C ./monitor/dtrace_generator decls
 
 

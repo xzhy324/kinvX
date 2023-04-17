@@ -1,4 +1,6 @@
 *.dtrace
 *.decls
 *.txt
-*.inv.gz
+*.gz
+*.inv
+__pycache__

@@ -8,20 +8,29 @@ initialize when kernel starts up
 make install
 ```
 
-generate kernel dtrace (kernel snapshot) during runtime
+generate kernel dtrace (kernel snapshot) during runtime,\
+note that this process can be repeated multiple times to generate multiple dtrace
 ```bash
-make gen_dtrace N_DTRACE=3
+make generate_dtrace
 ```
 
-run daikon to detect invariants
+run daikon to detect invariants based on the generated dtrace
 ```bash
-cd ./monitor/dtrace_generator
-java -cp $DAIKONDIR/daikon.jar daikon.Daikon \
---config_option daikon.derive.Derivation.disable_derived_variables=true \
-test.decls 0.dtrace 1.dtrace 2.dtrace
+make generate_invariants
 ```
 
-uninstall kinvX after use
+reset the dtrace and invariants so another round of dtrace-generation and invariants-inference can be started
+```bash
+make reset
+``` 
+
+compare the invariants with the previous one
+```bash
+cd ./monitor/invariants
+make diff 1.inv 2.inv
+```
+
+uninstall kinvX
 ```bash
 make uninstall
 ```
@@ -38,10 +47,10 @@ make uninstall
 ### Monitor Side
 * Semantic Builder
     * table_initializer : build the kernel space's semantics with the help of cord-exporter and system.map and result in forms of triple unit <name, va, pa>, which is used to detect the invariants.
-    > system.map can be replaced by nm inference from a kernel image.
     * table_reader: behold the triple unit table and dictionaryize it to accelerate access.
 * Dtrace Generator
-    * decls_generator : generate the dtrace's decls part with the help of table_reader.
-    * dtrace_generator : generate the dtrace's probe part with the help of table_reader.
-* Data Extractor
-    > TBC
+    * decls_generator : generate the dtrace's decls based on initialized table.
+    * dtrace_generator : generate the dtrace based on initialized table.
+
+* Invariants Detector
+    * invariants_utils : useful tools for invariants file's diff and print. Also a folder to store the .inv files in a non-conflict naming way.

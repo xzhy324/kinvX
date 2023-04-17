@@ -1,8 +1,13 @@
 import sys
-import ctypes
+import ctypes  # load the shared library
+import config
+
+start_symbol = config.start_symbol
+end_symbol = config.end_symbol
+gap = config.gap  # if gap != 0 ,then end_symbol is not used
 
 # load the shared library from pa_fetcher
-fetcher = ctypes.cdll.LoadLibrary('/home/ubuntu/projects/kinvX/host/pa_fetcher/lib_fetcher.so')
+fetcher = ctypes.cdll.LoadLibrary(config.path_to_libfetcher)
 fetcher.get_pa.restype = ctypes.c_char_p
 
 with open("counter.txt", "r") as f:
@@ -13,25 +18,28 @@ dtrace_name = str(counter) + ".dtrace"
 
 def get_cur_symbols():
     ret = {}
-    with open("../semantic_builder/table.txt", "r") as f:
+    with open(config.path_to_table, "r") as f:
         lines = f.readlines()
 
-        # 在data段中分析数据不变式
-        for (index, line) in enumerate(lines):
-            if line.split()[0] == "_sdata":
+        # 在[start_symbol, end_symbol) 或 [start_symbol, start_symbol+gap)中分析数据不变式
+        for index, line in enumerate(lines):
+            if line.split()[0] == start_symbol:
                 start_position = index
-            if line.split()[0] == "_edata":
+            if line.split()[0] == end_symbol:
                 end_position = index
                 break
+        end_position = start_position + gap if gap != 0 else end_position
         lines = lines[start_position:end_position]
 
         # 利用动态链接库获取物理内存对应的值
         for line in lines:
             name = line.split()[0]
             physical_address = line.split()[2]
-            arg = ctypes.c_char_p(bytes(physical_address, 'utf-8'))
-            value = fetcher.get_pa(arg, 8).decode('utf-8') #注意这里的第二个参数，表示读取n个字节，但是该接口没有实现，只能读8个字节
-            ret[name] = int(value,16)
+            arg = ctypes.c_char_p(bytes(physical_address, "utf-8"))
+            value = fetcher.get_pa(arg, 8).decode(
+                "utf-8"
+            )  # 注意这里的第二个参数，表示读取n个字节，但是该接口没有实现，只能读8个字节
+            ret[name] = int(value, 16)
 
     return ret
 

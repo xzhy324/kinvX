@@ -1,0 +1,25 @@
+file1 := ?
+file2 := ?
+
+
+print:
+	java -cp $$DAIKONDIR/daikon.jar daikon.PrintInvariants $(file1)
+
+print_to_file:
+	java -cp $$DAIKONDIR/daikon.jar daikon.PrintInvariants --output $(file2) $(file1)
+
+diff:
+	java -cp $$DAIKONDIR/daikon.jar daikon.diff.Diff -d $(file1) $(file2)
+
+install:
+	@echo 1 > counter.txt
+
+rename_0inv:
+	@mv 0.inv $(shell cat counter.txt).inv
+	@echo $$(($(shell cat counter.txt)+1)) > counter.txt
+
+uninstall:clean
+
+clean:
+	rm *.inv *.txt
+
