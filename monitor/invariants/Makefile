@@ -21,5 +21,5 @@ rename_0inv:
 uninstall:clean
 
 clean:
-	rm *.inv *.txt
+	rm -f *.inv *.txt
 

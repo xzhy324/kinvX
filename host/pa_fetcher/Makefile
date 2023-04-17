@@ -14,8 +14,8 @@ install: build
 
 uninstall:clean
 	sudo rmmod dram.ko
-	sudo rm /dev/dram
+	sudo rm -f /dev/dram
 
 clean:
 	make -C $(LINUX_KERNEL_PATH) M=$(CURRENT_PATH) clean 
-	rm bit64_fetcher lib_fetcher.so
+	rm -f bit64_fetcher lib_fetcher.so

@@ -2,5 +2,5 @@ install:
 	zsh ./get_systemmap.sh
 
 uninstall:
-	rm ./table.txt 
-	sudo rm ./System.map
+	rm -f ./table.txt 
+	sudo rm -f ./System.map

@@ -3,6 +3,22 @@ a runtime kernel invariants detector, based on the [Daikon](https://plse.cs.wash
 
 ## Usage
 
+edit ./config to specify the scope of the kernel symbols you want to detect invariants for.
+```
+if gap == 0 then
+    scope = [start_symbol, end_symbol)
+else
+    scope = [start_symbol, start_symbol + gap)
+```
+
+```bash
+# ./config
+start_symbol=sys_call_table  # must be specified
+end_symbol=_edata   # either end_symbol or gap must be specified
+gap=100
+```
+> Assume that 1. end_symbol's address HIGHER than start_symbol's address 2. gap >= 0
+
 initialize when kernel starts up
 ```bash
 make install

@@ -14,7 +14,8 @@ A typical usage scenario is the following:
 2. (result0 =>) 0.dtrace => result0 => 1.dtrace => result1 => 2.dtrace => result2 => ... => n.dtrace => resultn \
 > 0.dtrace use cur_data as prev_data so it's a const map
 
-## Usage
+## Usage [deprecated]
+please use the Makefile in root directory.
 
 ```bash
 python decl_generate.py
@@ -23,4 +24,18 @@ python dtrace_generator.py
 python dtrace_generator.py
 ...
 ```
-```
+
+
+## Intermediary File's Format
+for .dtrace and .decl file, please refer to [Daikon](https://plse.cs.washington.edu/daikon/)'s tutorial.
+### .decls
+kernel data is all in represention of Java.lang.String(a type supported in Daikon), which is specified in each item's declaration in .decl file. \
+The reason why I choose to use String is that int type used in Daikon is only **4-Byte** long, which is not enough for **64-Bit** address(which is common for kernel symbols's value). 
+
+### .dtrace
+all symbols are in <key, value> format, in which the key is the name of the variable, and the value is 64 bits fetched from the symbol.
+Value field is represented in decimal format.
+
+### result*.txt
+they are duplicate of .dtrace file, but in a more readable and parsable format. 
+Value field is represented in hex format.
