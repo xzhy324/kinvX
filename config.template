@@ -3,4 +3,4 @@ end_symbol=_etext
 gap=50
 # daikon-mode: one of [ java.lang.String, int, hashcode , float ]
 mode=java.lang.String
-bytes_to_read=16
+bytes_to_read=8

@@ -4,12 +4,14 @@ import config
 start_symbol = config.start_symbol
 end_symbol = config.end_symbol
 gap = config.gap  # if gap != 0 ,then end_symbol is not used
+rep_type = config.mode
 
 
 def get_symbols():
     ret = []
     with open(config.path_to_table, "r") as f:
         lines = f.readlines()
+        start_position = -1
 
         # 在[start_symbol, end_symbol) 或 [start_symbol, start_symbol+gap)中分析数据不变式
         for index, line in enumerate(lines):
@@ -17,7 +19,8 @@ def get_symbols():
                 start_position = index
             if line.split()[0] == end_symbol:
                 end_position = index
-                break
+        if start_position < 0:
+            raise Exception("start_symbol:%s not found" % start_symbol)
         end_position = start_position + gap if gap != 0 else end_position
         lines = lines[start_position:end_position]
 
@@ -71,11 +74,11 @@ if __name__ == "__main__":
 
     make_decls_header()
     for symbol in symbols:
-        make_decls_variable(symbol)
+        make_decls_variable(name=symbol, rep_type=rep_type)
     print()
     make_decls_ender()
     for symbol in symbols:
-        make_decls_variable(symbol)
+        make_decls_variable(name=symbol, rep_type=rep_type)
 
     with open("counter.txt", "w") as f:
         f.write("0")

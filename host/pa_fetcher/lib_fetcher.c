@@ -3,13 +3,13 @@
 #include <fcntl.h>
 
 #define MEM_DEVICE "/dev/dram"
-#define BUFSIZE 8 // 一次读入8个字节，64位
+#define BUFSIZE 2048 // 一次读入8个字节，64位
 
 char ret[BUFSIZE * 3];
+char buffer[BUFSIZE];
 
 char* get_pa(const char* pa, int bytes) {
     //printf("lib:pa:%s bytes:%d\n", pa, bytes);
-    char buffer[BUFSIZE];
     int fd = open(MEM_DEVICE, O_RDONLY);
     if (fd < 0)
     {
@@ -19,7 +19,7 @@ char* get_pa(const char* pa, int bytes) {
     long long position = strtoll(pa, NULL, 16);
     lseek64(fd, position, SEEK_SET);
     char *where = buffer;
-    int to_read = BUFSIZE;
+    int to_read = bytes;
     while (to_read > 0)
     {
         int nbytes = read(fd, where, to_read);

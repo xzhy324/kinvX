@@ -2,14 +2,13 @@
 a runtime kernel invariants detector, based on the [Daikon](https://plse.cs.washington.edu/daikon/) tool. 
 
 ## Usage
+create config file from template
+```bash
+cp ./config.template ./config
+```
 
 edit ./config to specify the scope of the kernel symbols you want to detect invariants for.
-```
-if gap == 0 then
-    scope = [start_symbol, end_symbol)
-else
-    scope = [start_symbol, start_symbol + gap)
-```
+
 
 ```bash
 # ./config
@@ -18,10 +17,24 @@ start_symbol=sys_call_table
 # either end_symbol or gap must be specified
 end_symbol=_edata
 gap=100
+mode=java.lang.String
+byte_to_read=8
 ```
-> Assume that 1. end_symbol's address HIGHER than start_symbol's address 2. gap >= 0
+```
+> Assume that 
+> 1. end_symbol's address HIGHER than start_symbol's address 
+> 2. gap >= 0
+> 3. mode is one of [java.lang.String, int, float, hashcode] (See DaiKon's doc for more details)
+```
+```
+NOTE THAT:
+if gap == 0 then
+    scope = [start_symbol, end_symbol)
+else
+    scope = [start_symbol, start_symbol + gap)
+```
 
-initialize when kernel starts up
+initialize kinvX when kernel starts up
 ```bash
 make install
 ```
@@ -54,8 +67,9 @@ make uninstall
 ```
 
 ## Requirements
-1. python3
-2. linux-headers
+1. Daikon [make sure $DAIKONDIR is set and jdk version >= 1.8]
+2. linux-headers (kernel version >= 3.0)
+3. python3
 
 
 ## Roadmap

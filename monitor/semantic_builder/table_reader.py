@@ -1,4 +1,5 @@
 import config
+
 path_to_table_txt = config.path_to_table_txt
 
 
@@ -30,8 +31,13 @@ if __name__ == "__main__":
         "__bss_stop",
     ]
     print("\nKernel Address Space Layout:")
+    print(
+        "%6s %20s  %18s  %18s"
+        % ("Index", "Symbol Name", "Virtual Address", "Physical Address")
+    )
     for index, item in enumerate(table):
         if item in symbols:
             print(
-                "%6d %20s  0x%x  0x%x" % (index, item, table[item][0], table[item][1])
+                "%6d %20s  0x%016x  0x%016x"
+                % (index, item, table[item][0], table[item][1])
             )

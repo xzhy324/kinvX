@@ -1,8 +1,7 @@
-.PHONY: install uninstall host monitor
+.PHONY: install uninstall host monitor config
 N_DTRACE ?= 1
 
-install:init host monitor #order matters
-	@python3 -u ./monitor/semantic_builder/table_reader.py
+install:init host monitor config #order matters
 	@echo "Installation complete"
 
 init:
@@ -15,7 +14,6 @@ host:
 
 monitor:
 	make -C ./monitor/dtrace_generator decls
-	@python3 -u ./monitor/dtrace_generator/config.py
 	make -C ./monitor/invariants install
 	
 
@@ -37,4 +35,7 @@ reset:
 	make -C ./monitor/dtrace_generator clean
 	make -C ./monitor/dtrace_generator decls
 
+config: # print the config to stdout
+	@python3 -u ./monitor/dtrace_generator/config.py
+	@python3 -u ./monitor/semantic_builder/table_reader.py
 

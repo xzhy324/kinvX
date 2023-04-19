@@ -41,19 +41,18 @@ struct file_operations
 
 static int __init dram_init(void)
 {
-    printk("<1>\nInstalling \'%s\' module ", modname);
-    printk("(major=%d)\n", my_major);
+    printk("[dram.ko] Installing \'%s\' module ", modname);
+    printk("[dram.ko] (major=%d)\n", my_major);
 
     dram_size = (unsigned long)get_num_physpages() << PAGE_SHIFT;
-    /* dram_size = 0x25f5ffff8; */
-    printk("<1>  ramtop=%08lX (%lu MB)\n", dram_size, dram_size >> 20);
+    printk("[dram.ko] ramtop=%08lX (%lu MB)\n", dram_size, dram_size >> 20);
     return register_chrdev(my_major, modname, &my_fops);
 }
 
 static void __exit dram_exit(void)
 {
     unregister_chrdev(my_major, modname);
-    printk("<1>Removing \'%s\' module\n", modname);
+    printk("[dram.ko] Removing \'%s\' module\n", modname);
 }
 
 ssize_t my_read(struct file *file, char *buf, size_t count, loff_t *pos)

@@ -5,6 +5,8 @@ import config
 start_symbol = config.start_symbol
 end_symbol = config.end_symbol
 gap = config.gap  # if gap != 0 ,then end_symbol is not used
+rep_type = config.mode
+bytes_to_read = config.bytes_to_read
 
 # load the shared library from pa_fetcher
 fetcher = ctypes.cdll.LoadLibrary(config.path_to_libfetcher)
@@ -16,6 +18,7 @@ with open("counter.txt", "r") as f:
 dtrace_name = str(counter) + ".dtrace"
 
 
+# 从动态链接库中直接访问dram设备读取裸机内存
 def get_cur_symbols():
     ret = {}
     with open(config.path_to_table, "r") as f:
@@ -27,7 +30,6 @@ def get_cur_symbols():
                 start_position = index
             if line.split()[0] == end_symbol:
                 end_position = index
-                break
         end_position = start_position + gap if gap != 0 else end_position
         lines = lines[start_position:end_position]
 
@@ -35,15 +37,14 @@ def get_cur_symbols():
         for line in lines:
             name = line.split()[0]
             physical_address = line.split()[2]
-            arg = ctypes.c_char_p(bytes(physical_address, "utf-8"))
-            value = fetcher.get_pa(arg, 8).decode(
-                "utf-8"
-            )  # 注意这里的第二个参数，表示读取n个字节，但是该接口没有实现，只能读8个字节
+            pa_in_char_p = ctypes.c_char_p(bytes(physical_address, "utf-8"))
+            value = fetcher.get_pa(pa_in_char_p, bytes_to_read).decode("utf-8")
             ret[name] = int(value, 16)
 
     return ret
 
 
+# 从之前保存的文件中读取上一次的数据
 def get_prev_symbols():
     symbols = {}
     with open("result%d.txt" % (counter - 1), "r") as f:
@@ -69,7 +70,10 @@ this_invocation_nonce
 
 def make_dtrace_variable(name: str, value, modified=0):
     print(name)
-    print('"%s"' % value)
+    if rep_type == "java.lang.String":
+        print('"%s"' % value)
+    else:
+        print(value)
     print(modified)
 
 

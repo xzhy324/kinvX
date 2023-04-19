@@ -11,3 +11,4 @@ modules.order
 *.mod
 build/
 System.map*
+config
