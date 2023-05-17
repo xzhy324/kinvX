@@ -20,11 +20,11 @@ gap=100
 ...
 ```
 
-> Assume that 
+> in config file, we assume that 
 > 1. end_symbol's address HIGHER than start_symbol's address 
 > 2. gap >= 0
 > 3. mode is one of [java.lang.String, int, float, hashcode] (refer to DaiKon's doc for more details)
-> 4. symbol_type is one of [T, t, D, d, B, b, R, r] ([System.map Wiki](https://en.wikipedia.org/wiki/System.map#:~:text=kernel.%5B3%5D-,Symbol%20types,-%5Bedit%5D))
+> 4. symbol_type is one of [T, t, D, d, B, b, R, r, A, a, V, v, W, w] ([System.map Wiki](https://en.wikipedia.org/wiki/System.map#:~:text=kernel.%5B3%5D-,Symbol%20types,-%5Bedit%5D))
 
 ```
 NOTE THAT:

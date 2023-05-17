@@ -1,5 +1,5 @@
 install:
-	zsh ./get_systemmap.sh
+	$(SHELL) ./get_systemmap.sh
 
 uninstall:
 	rm -f ./table.txt 
