@@ -17,15 +17,15 @@ start_symbol=sys_call_table
 # either end_symbol or gap must be specified
 end_symbol=_edata
 gap=100
-mode=java.lang.String
-byte_to_read=8
+...
 ```
-```
+
 > Assume that 
 > 1. end_symbol's address HIGHER than start_symbol's address 
 > 2. gap >= 0
-> 3. mode is one of [java.lang.String, int, float, hashcode] (See DaiKon's doc for more details)
-```
+> 3. mode is one of [java.lang.String, int, float, hashcode] (refer to DaiKon's doc for more details)
+> 4. symbol_type is one of [T, t, D, d, B, b, R, r] ([System.map Wiki](https://en.wikipedia.org/wiki/System.map#:~:text=kernel.%5B3%5D-,Symbol%20types,-%5Bedit%5D))
+
 ```
 NOTE THAT:
 if gap == 0 then
@@ -72,22 +72,24 @@ make uninstall
 3. python3
 
 
-## Roadmap
+## Architecture
 ### Host Side
 * Page Fetcher
-    * dram : char-type kernel driver to resolve high-end memspace
-    * bit64_fetcher : a 64-bit physical address's value fetcher
+    * **dram** : char-type kernel driver to resolve high-end memspace
+    * **bit64_fetcher** : a 64-bit physical address's value fetcher
+    * **lib_fetcher**: a dynamic library that wraps the dram to provide a more friendly interface for Dtrace generator.
 * Cordinate Exporter
-    * cordinate_exporter : export the self-recurssive cordinate to help build kernel space's semantics. Imported by semantic-builder on monitor's side.
+    * **cordinate_exporter** : export the self-recurssive cordinate to help build kernel space's semantics. Imported by semantic-builder on monitor's side.
     * shell script : a shell script to pass out the message from kernel's ring buffer. 
-    > [which could be replaced by a module in future.]
+      > [which could be replaced by a module in future.]
 ### Monitor Side
 * Semantic Builder
-    * table_initializer : build the kernel space's semantics with the help of cord-exporter and system.map and result in forms of triple unit <name, va, pa>, which is used to detect the invariants.
-    * table_reader: behold the triple unit table and dictionaryize it to accelerate access.
+    * **table_initializer** : build the kernel space's semantics with the help of cord-exporter and system.map and result in forms of triple unit <name, va, pa>, which is used to detect the invariants.
+    * **table_reader**: print the initialized table's layout in a human-readable way.
+    * **get_systemmap.sh**: a shell script to get symbols from vmlinux or system.map from the host side.
 * Dtrace Generator
-    * decls_generator : generate the dtrace's decls based on initialized table.
-    * dtrace_generator : generate the dtrace based on initialized table.
+    * **decls_generator** : generate the dtrace's decls based on initialized table.
+    * **dtrace_generator** : generate the dtrace based on initialized table.
 
 * Invariants Detector
-    * invariants_utils : useful tools for invariants file's diff and print. Also a folder to store the .inv files in a non-conflict naming way.
+    * **invariants_utils** : useful tools for invariants file's diff and print. Also a folder to store the .inv files in a non-conflict naming way.

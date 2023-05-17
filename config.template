@@ -1,6 +1,22 @@
+# kinvX settings
 start_symbol=sys_call_table
-end_symbol=_etext
-gap=50
+end_symbol=__end_rodata
+gap=100
+bytes_to_read=8
+
+# Daikon settings
 # daikon-mode: one of [ java.lang.String, int, hashcode , float ]
 mode=java.lang.String
-bytes_to_read=8
+
+
+# symbol_type:
+#    T,  # global function in text (code) section
+#    t,  # local function in text (code) section
+#    D,  # global initialized data section
+#    d,  # local initialized data section
+#    B,  # global uninitialized data section (called BSS)
+#    b,  # local uninitialized data section (called BSS)
+#    R,  # global read only data section
+#    r,  # local read only data section
+# ref: https://en.wikipedia.org/wiki/System.map#:~:text=kernel.%5B3%5D-,Symbol%20types,-%5Bedit%5D
+symbol_type=[D,d,B,b,R]
