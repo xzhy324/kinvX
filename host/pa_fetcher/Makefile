@@ -15,7 +15,7 @@ install: build
 	sudo mknod /dev/dram c 85 0   # major_dev_id(85) is specified in dram.c
 
 uninstall:clean
-	sudo rmmod dram.ko
+	-sudo rmmod dram.ko
 	sudo rm -f /dev/dram
 
 clean:
