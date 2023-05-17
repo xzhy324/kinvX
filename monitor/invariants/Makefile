@@ -3,7 +3,9 @@ file2 := ?
 
 
 print:
-	java -cp $$DAIKONDIR/daikon.jar daikon.PrintInvariants $(file1)
+	java -cp $$DAIKONDIR/daikon.jar daikon.PrintInvariants \
+	 --ppt-select-patterns="CollectionInv" \
+	 $(file1)
 
 print_to_file:
 	java -cp $$DAIKONDIR/daikon.jar daikon.PrintInvariants --output $(file2) $(file1)
